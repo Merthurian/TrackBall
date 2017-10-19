@@ -20,27 +20,34 @@ long yPosition = -999;
 
 unsigned long time;
 
-String message;
-
 void loop() {  
   if(millis() > time){
     time = millis() + 20;
     
-    message = "0";
+    Serial.print("0");
     
     long x = xEncoder.read();
     
     char sign = (x > -1) ? '+' : '-';
     
-    message.concat(sign);
+    Serial.print(sign);
     
-    String val = String(x, DEC);
-    val = val.substring(val.length() - 4);
+    padding(abs(x), 4);
     
-    message.concat(val);
+    Serial.print("\r\n");
     
-    Serial.println(message);
     xEncoder.write(0);
   }
+}
+
+void padding( int number, byte width ) {
+ int currentMax = 10;
+ for (byte i=1; i<width; i++){
+   if (number < currentMax) {
+     Serial.print("0");
+   }
+   currentMax *= 10;
+ }
+ Serial.print(number);
 }
 
